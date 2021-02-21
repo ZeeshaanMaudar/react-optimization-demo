@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useCallback, useMemo } from 'react';
+import Child from './Child';
 
-function App() {
+const App = () => {
+
+  const [counter, setCounter] = useState(0);
+  const [array, setArray] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+  const handleClick = () => {
+    setCounter(prevCount => prevCount + 1);
+  }
+
+  let val = 10;
+
+  const someFunc = () => {
+    setArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  }
+
+  const memoizedFunc = useCallback(someFunc, []);
+
+  // const someFunc2 = useCallback(() => {
+  //   console.log('hello')
+  // }, [])
+
+  const maxValue = () => {
+    const max = Math.max(...array);
+    return max;
+  }
+
+  const memoizedMaxValue = useMemo(maxValue, [array])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <p>{counter}</p>
+      <button onClick={handleClick}>Click Me</button>
+      <Child {...{ val, memoizedFunc, memoizedMaxValue }} />
     </div>
   );
+
 }
 
 export default App;
